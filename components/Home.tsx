@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { User } from '../types.ts';
+import { User } from '../types';
 
 interface HomeProps {
   user: User | null;
@@ -21,12 +21,11 @@ const Home: React.FC<HomeProps> = ({ user, onBook, onAdmin }) => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-[#0a0a0a] z-10" />
         <img 
           src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=2000&auto=format&fit=crop" 
-          className="absolute inset-0 w-full h-full object-cover scale-110 animate-pulse-slow" 
+          className="absolute inset-0 w-full h-full object-cover scale-110" 
           alt="Barber Shop Interior" 
-          style={{ animationDuration: '20s' }}
         />
         
-        <div className="relative z-20 max-w-6xl px-6 text-center animate-slide-up">
+        <div className="relative z-20 max-w-6xl px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full mb-8 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-[#d4af37] animate-ping" />
             <span className="text-[10px] font-black tracking-[0.4em] uppercase text-white/80">Premium Experience</span>
@@ -113,7 +112,7 @@ const Home: React.FC<HomeProps> = ({ user, onBook, onAdmin }) => {
           </div>
           <div className="space-y-16">
             {testimonials.map((t, i) => (
-              <div key={i} className="animate-slide-up" style={{ animationDelay: `${i * 200}ms` }}>
+              <div key={i} className="animate-slide-up">
                 <p className="text-2xl md:text-3xl font-medium italic text-white/80 leading-relaxed mb-6">"{t.text}"</p>
                 <div className="text-xs font-black uppercase tracking-widest text-[#d4af37]">{t.name} • <span className="text-white/20">{t.role}</span></div>
               </div>

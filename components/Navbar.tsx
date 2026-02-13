@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { User } from '../types.ts';
+import { User } from '../types';
 
 interface NavbarProps {
   user: User | null;
@@ -69,7 +69,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, currentView, onNavigate, onLogout
       </div>
 
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-black border-b border-white/10 flex flex-col p-6 gap-6 items-center animate-fade-in-down">
+        <div className="md:hidden absolute top-full left-0 w-full bg-black border-b border-white/10 flex flex-col p-6 gap-6 items-center">
           <NavLink to="home" label="Início" />
           {user ? (
             <>
