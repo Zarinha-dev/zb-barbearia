@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { Service, User } from '../types.ts';
+import { Service, User } from '../types';
+import { db } from '../services/database';
 
 const Booking: React.FC<{ user: User | null }> = ({ user }) => {
   const [step, setStep] = useState(1);
@@ -20,14 +21,24 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
   }, []);
 
   const handleBook = () => {
+    if (!user || !selectedService) return;
+
+    db.saveAppointment({
+      user_id: user.id,
+      service_id: selectedService.id,
+      date: selectedDate,
+      time: selectedTime,
+      status: 'booked',
+      price_cents: selectedService.price_cents,
+      client_name: user.name,
+      client_email: user.email,
+      service: selectedService.name
+    });
+
     setIsSuccess(true);
-    // Simulação de delay de rede
     setTimeout(() => {
-      setStep(1);
-      setIsSuccess(false);
-      setSelectedService(null);
-      setSelectedTime('');
-    }, 5000);
+      window.location.reload(); // Recarregar para resetar estado
+    }, 4000);
   };
 
   if (isSuccess) {
@@ -42,10 +53,10 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
            </div>
         </div>
         <h2 className="text-5xl font-black mb-4 gold-gradient italic tracking-tighter uppercase">Reserva Confirmada!</h2>
-        <p className="text-white/50 font-medium text-lg max-w-md mx-auto">
-          Tudo pronto! Você será recebido em nossa unidade em <span className="text-white">{selectedDate.split('-').reverse().join('/')}</span> às <span className="text-white">{selectedTime}</span>.
+        <p className="text-white/50 font-medium text-lg max-w-md mx-auto italic">
+          Tudo pronto, <span className="text-white font-bold">{user?.name}</span>! Te esperamos em <span className="text-white">{selectedDate.split('-').reverse().join('/')}</span> às <span className="text-white font-black">{selectedTime}</span>.
         </p>
-        <div className="mt-12 text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Redirecionando para o início...</div>
+        <div className="mt-12 text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Finalizando experiência...</div>
       </div>
     );
   }
@@ -54,8 +65,8 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
     <div className="max-w-5xl mx-auto py-24 px-6 animate-slide-up">
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
         <div>
-          <h2 className="text-xs font-black text-[#d4af37] tracking-[0.5em] uppercase mb-4">Step 0{step}</h2>
-          <h3 className="text-6xl font-black tracking-tighter uppercase">Agendamento.</h3>
+          <h2 className="text-xs font-black text-[#d4af37] tracking-[0.5em] uppercase mb-4">Passo 0{step}</h2>
+          <h3 className="text-6xl font-black tracking-tighter uppercase italic">O seu momento.</h3>
         </div>
         <div className="flex gap-3 pb-2">
           {[1, 2, 3].map(i => (
@@ -67,7 +78,7 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
       <div className="glass-panel rounded-[3rem] p-8 md:p-16 shadow-3xl">
         {step === 1 && (
           <div className="animate-slide-up">
-            <p className="text-xs font-black uppercase tracking-[0.3em] mb-12 text-white/30">Selecione a experiência desejada</p>
+            <p className="text-xs font-black uppercase tracking-[0.3em] mb-12 text-white/30">Selecione o serviço premium</p>
             <div className="grid sm:grid-cols-2 gap-6">
               {services.map(s => (
                 <button
@@ -77,7 +88,7 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
                 >
                   <div className="relative z-10">
                     <h4 className="font-black text-2xl mb-1 group-hover:text-[#d4af37] transition-colors">{s.name}</h4>
-                    <p className="text-white/30 text-[10px] font-black uppercase tracking-widest mb-8">{s.duration_min} min de procedimento</p>
+                    <p className="text-white/30 text-[10px] font-black uppercase tracking-widest mb-8">{s.duration_min} min</p>
                     <div className="flex justify-between items-center">
                       <span className="text-3xl font-black gold-gradient">R$ {(s.price_cents / 100).toFixed(2)}</span>
                       <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#d4af37] group-hover:border-[#d4af37] transition-all transform group-hover:translate-x-1">
@@ -85,7 +96,6 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37] opacity-0 group-hover:opacity-5 blur-3xl transition-opacity -mr-16 -mt-16" />
                 </button>
               ))}
             </div>
@@ -95,13 +105,13 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
         {step === 2 && (
           <div className="animate-slide-up">
             <div className="flex items-center justify-between mb-12">
-              <p className="text-xs font-black uppercase tracking-[0.3em] text-white/30">Escolha o seu momento</p>
-              <button onClick={() => setStep(1)} className="text-[10px] font-black uppercase tracking-widest text-[#d4af37] hover:underline">Alterar serviço</button>
+              <p className="text-xs font-black uppercase tracking-[0.3em] text-white/30">Agenda Disponível</p>
+              <button onClick={() => setStep(1)} className="text-[10px] font-black uppercase tracking-widest text-[#d4af37] hover:underline transition-all">Alterar serviço</button>
             </div>
             
             <div className="grid md:grid-cols-2 gap-12">
               <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-white/20 mb-4">Selecione o Dia</label>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-white/20 mb-4">Data</label>
                 <input 
                   type="date" 
                   value={selectedDate}
@@ -109,11 +119,10 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
                   onChange={(e) => setSelectedDate(e.target.value)}
                   className="w-full bg-black/60 border border-white/10 rounded-2xl p-6 text-white outline-none focus:border-[#d4af37] transition-all font-black text-xl"
                 />
-                <p className="mt-4 text-[10px] text-white/20 font-medium">Atendemos de terça a sábado, das 09h às 19h.</p>
               </div>
 
               <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-white/20 mb-4">Selecione o Horário</label>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-white/20 mb-4">Horário</label>
                 <div className="grid grid-cols-3 gap-3">
                   {['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'].map(t => (
                     <button
@@ -132,19 +141,14 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
 
         {step === 3 && selectedService && (
           <div className="animate-slide-up max-w-2xl mx-auto">
-            <p className="text-xs font-black uppercase tracking-[0.3em] text-center mb-12 text-white/30">Confirmação de Reserva</p>
+            <p className="text-xs font-black uppercase tracking-[0.3em] text-center mb-12 text-white/30">Revisão Final</p>
 
             <div className="bg-black/60 border border-white/5 p-12 rounded-[2.5rem] mb-12 space-y-8 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-8 opacity-5">
-                <svg className="w-24 h-24 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
-              </div>
-
               <div className="flex justify-between items-end border-b border-white/5 pb-6">
                 <div className="space-y-1">
-                  <span className="text-white/20 text-[10px] font-black uppercase tracking-widest block">Serviço Premium</span>
+                  <span className="text-white/20 text-[10px] font-black uppercase tracking-widest block">Experiência</span>
                   <span className="font-black text-2xl uppercase italic gold-gradient">{selectedService.name}</span>
                 </div>
-                <button onClick={() => setStep(1)} className="text-[10px] font-black text-white/20 hover:text-[#d4af37] uppercase underline">Editar</button>
               </div>
 
               <div className="grid grid-cols-2 gap-8">
@@ -153,13 +157,13 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
                   <span className="font-black text-xl text-white/80">{selectedDate.split('-').reverse().join('/')}</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-white/20 text-[10px] font-black uppercase tracking-widest block">Horário</span>
+                  <span className="text-white/20 text-[10px] font-black uppercase tracking-widest block">Hora</span>
                   <span className="font-black text-xl text-white/80">{selectedTime}</span>
                 </div>
               </div>
 
               <div className="pt-8 border-t border-white/5 flex justify-between items-center">
-                <span className="text-white/20 text-[10px] font-black uppercase tracking-widest">Total do Investimento</span>
+                <span className="text-white/20 text-[10px] font-black uppercase tracking-widest">Total</span>
                 <span className="text-4xl font-black gold-gradient">R$ {(selectedService.price_cents / 100).toFixed(2)}</span>
               </div>
             </div>
@@ -168,9 +172,8 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
               onClick={handleBook}
               className="w-full gold-bg text-black py-7 rounded-3xl font-black text-xl shadow-2xl shadow-gold-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-tighter"
             >
-              FINALIZAR AGENDAMENTO
+              Confirmar Agendamento
             </button>
-            <p className="mt-6 text-center text-white/20 text-[10px] font-black uppercase tracking-widest">Pague diretamente na barbearia (Cartão ou Dinheiro)</p>
           </div>
         )}
       </div>
