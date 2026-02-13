@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { Appointment } from '../types';
+import { Appointment } from '../types.ts';
 
 interface BlockedSlot {
   date: string;
