@@ -1,6 +1,11 @@
 
-/* Você pode adicionar seus @imports aqui em cima, ex: */
-/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); */
+@import "tailwindcss";
+
+/* Estilos Personalizados ZB Barbearia */
+:root {
+  --gold-primary: #d4af37;
+  --gold-light: #f1d592;
+}
 
 body {
   font-family: 'Inter', sans-serif;
@@ -11,13 +16,13 @@ body {
 }
 
 .gold-gradient {
-  background: linear-gradient(135deg, #d4af37 0%, #f1d592 50%, #d4af37 100%);
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 50%, var(--gold-primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gold-bg {
-  background: linear-gradient(135deg, #d4af37 0%, #f1d592 50%, #d4af37 100%);
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 50%, var(--gold-primary) 100%);
 }
 
 .glass-panel {
@@ -42,4 +47,9 @@ body {
 
 .animate-slide-up {
   animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Utilitários Extras */
+.shadow-3xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
