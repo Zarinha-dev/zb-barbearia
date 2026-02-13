@@ -24,6 +24,15 @@
       background: linear-gradient(135deg, #d4af37 0%, #f1d592 50%, #d4af37 100%);
     }
     #root { height: 100vh; overflow-y: auto; }
+    
+    /* Animação de entrada suave */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
   </style>
   <script type="importmap">
 {
@@ -40,14 +49,13 @@
 }
 </script>
 </head>
-<body>
+<body class="animate-fade-in">
   <div id="root">
     <div class="h-screen flex items-center justify-center bg-black">
       <div class="text-center">
-        <h1 class="text-2xl font-black gold-gradient tracking-[0.3em] animate-pulse">CARREGANDO ZB...</h1>
+        <h1 class="text-2xl font-black gold-gradient tracking-[0.3em] animate-pulse uppercase">Carregando Experiência ZB...</h1>
       </div>
     </div>
   </div>
-  <script type="module" src="./index.tsx"></script>
 </body>
 </html>
