@@ -7,10 +7,11 @@ import Booking from './components/Booking';
 import AdminDashboard from './components/AdminDashboard';
 import Login from './components/Login';
 import Register from './components/Register';
+import Documentation from './components/Documentation';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [view, setView] = useState<'home' | 'booking' | 'admin' | 'login' | 'register'>('home');
+  const [view, setView] = useState<'home' | 'booking' | 'admin' | 'login' | 'register' | 'docs'>('home');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -69,6 +70,7 @@ const App: React.FC = () => {
         {view === 'admin' && user?.role === 'admin' && <AdminDashboard />}
         {view === 'login' && <Login onLogin={handleLogin} onGoRegister={() => setView('register')} />}
         {view === 'register' && <Register onGoLogin={() => setView('login')} />}
+        {view === 'docs' && <Documentation />}
       </main>
 
       <footer className="bg-black border-t border-white/5 py-12 px-6 mt-20">
@@ -78,6 +80,7 @@ const App: React.FC = () => {
             <p className="text-white/40 mt-2 text-sm uppercase tracking-widest font-bold">Nine, Portugal</p>
           </div>
           <div className="flex gap-8">
+            <button onClick={() => setView('docs')} className="text-white/40 hover:text-[#d4af37] transition-colors font-black text-xs tracking-widest uppercase">Tech Docs</button>
             <a href="#" className="text-white/40 hover:text-[#d4af37] transition-colors font-black text-xs tracking-widest uppercase">Instagram</a>
             <a href="#" className="text-white/40 hover:text-[#d4af37] transition-colors font-black text-xs tracking-widest uppercase">WhatsApp</a>
           </div>
