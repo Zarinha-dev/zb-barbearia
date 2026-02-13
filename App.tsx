@@ -20,9 +20,10 @@ const App: React.FC = () => {
         setUser(JSON.parse(savedUser));
       }
     } catch (e) {
-      console.error("Erro ao carregar usuário:", e);
+      console.error("Erro ao recuperar sessão:", e);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
   const handleLogin = (u: User) => {
@@ -37,10 +38,21 @@ const App: React.FC = () => {
     setView('home');
   };
 
-  if (isLoading) return <div className="h-screen flex items-center justify-center bg-black text-[#d4af37] font-black">ZB BARBEARIA...</div>;
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-black">
+        <div className="text-center">
+          <h1 className="text-2xl font-black gold-gradient tracking-[0.3em] animate-pulse">ZB BARBEARIA</h1>
+          <div className="mt-4 w-12 h-1 bg-gold-bg mx-auto rounded-full overflow-hidden">
+            <div className="w-full h-full bg-white/20 animate-loading-bar"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0a0a0a]">
+    <div className="min-h-screen flex flex-col bg-[#0a0a0a] text-white">
       <Navbar 
         user={user} 
         onNavigate={setView} 
@@ -49,23 +61,32 @@ const App: React.FC = () => {
       />
       
       <main className="flex-grow">
-        {view === 'home' && <Home user={user} onBook={() => setView('booking')} onAdmin={() => setView('admin')} />}
+        {view === 'home' && (
+          <Home 
+            user={user} 
+            onBook={() => setView(user ? 'booking' : 'login')} 
+            onAdmin={() => setView('admin')} 
+          />
+        )}
         {view === 'booking' && <Booking user={user} />}
         {view === 'admin' && user?.role === 'admin' && <AdminDashboard />}
         {view === 'login' && <Login onLogin={handleLogin} onGoRegister={() => setView('register')} />}
         {view === 'register' && <Register onGoLogin={() => setView('login')} />}
       </main>
 
-      <footer className="bg-[#050505] border-t border-white/5 py-12 px-6 mt-20">
+      <footer className="bg-black border-t border-white/5 py-12 px-6 mt-20">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="text-center md:text-left">
             <h2 className="text-2xl font-black gold-gradient tracking-tighter">ZB BARBEARIA</h2>
-            <p className="text-white/40 mt-2">© {new Date().getFullYear()} - Nine, Portugal.</p>
+            <p className="text-white/40 mt-2 text-sm uppercase tracking-widest font-bold">Nine, Portugal</p>
           </div>
-          <div className="flex gap-6">
-            <a href="#" className="text-white/60 hover:text-[#d4af37] transition-colors font-bold text-sm">Instagram</a>
-            <a href="#" className="text-white/60 hover:text-[#d4af37] transition-colors font-bold text-sm">WhatsApp</a>
+          <div className="flex gap-8">
+            <a href="#" className="text-white/40 hover:text-[#d4af37] transition-colors font-black text-xs tracking-widest uppercase">Instagram</a>
+            <a href="#" className="text-white/40 hover:text-[#d4af37] transition-colors font-black text-xs tracking-widest uppercase">WhatsApp</a>
           </div>
+        </div>
+        <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5 text-center text-[10px] text-white/20 font-bold uppercase tracking-[0.5em]">
+          © {new Date().getFullYear()} - Onde o Estilo Encontra a Atitude
         </div>
       </footer>
     </div>
