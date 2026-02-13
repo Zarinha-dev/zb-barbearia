@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { User } from './types';
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import Booking from './components/Booking';
-import AdminDashboard from './components/AdminDashboard';
-import Login from './components/Login';
-import Register from './components/Register';
+import { User } from './types.ts';
+import Navbar from './components/Navbar.tsx';
+import Home from './components/Home.tsx';
+import Booking from './components/Booking.tsx';
+import AdminDashboard from './components/AdminDashboard.tsx';
+import Login from './components/Login.tsx';
+import Register from './components/Register.tsx';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -43,9 +43,6 @@ const App: React.FC = () => {
       <div className="h-screen flex items-center justify-center bg-black">
         <div className="text-center">
           <h1 className="text-2xl font-black gold-gradient tracking-[0.3em] animate-pulse">ZB BARBEARIA</h1>
-          <div className="mt-4 w-12 h-1 bg-gold-bg mx-auto rounded-full overflow-hidden">
-            <div className="w-full h-full bg-white/20 animate-loading-bar"></div>
-          </div>
         </div>
       </div>
     );
