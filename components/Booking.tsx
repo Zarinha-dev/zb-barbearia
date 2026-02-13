@@ -12,72 +12,80 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
 
   useEffect(() => {
     setServices([
-      { id: 1, name: 'Corte Premium', price_cents: 3500, duration_min: 40 },
-      { id: 2, name: 'Barba Terapia', price_cents: 2500, duration_min: 30 },
-      { id: 3, name: 'Combo ZB (Corte + Barba)', price_cents: 5500, duration_min: 70 },
-      { id: 4, name: 'Platinado / Pigmentação', price_cents: 8000, duration_min: 120 },
+      { id: 1, name: 'CORTE PREMIUM', price_cents: 3500, duration_min: 45 },
+      { id: 2, name: 'BARBA THERAPY', price_cents: 2500, duration_min: 30 },
+      { id: 3, name: 'COMBO ZB MASTER', price_cents: 5500, duration_min: 75 },
+      { id: 4, name: 'COLORIMETRIA / PLATINADO', price_cents: 8500, duration_min: 120 },
     ]);
   }, []);
 
-  const slots = ['09:00', '09:40', '10:20', '11:00', '14:00', '14:40', '15:20', '16:00', '17:00', '18:00'];
-
   const handleBook = () => {
     setIsSuccess(true);
+    // Simulação de delay de rede
     setTimeout(() => {
       setStep(1);
       setIsSuccess(false);
       setSelectedService(null);
       setSelectedTime('');
-    }, 4000);
+    }, 5000);
   };
 
   if (isSuccess) {
     return (
-      <div className="h-[60vh] flex flex-col items-center justify-center text-center px-6 animate-fade-in">
-        <div className="w-24 h-24 gold-bg rounded-full flex items-center justify-center mb-6 shadow-2xl shadow-gold-500/20">
-          <svg className="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-          </svg>
+      <div className="h-[70vh] flex flex-col items-center justify-center text-center px-6 animate-slide-up">
+        <div className="relative mb-10">
+           <div className="absolute inset-0 bg-[#d4af37] blur-3xl opacity-20 animate-pulse" />
+           <div className="relative w-32 h-32 gold-bg rounded-full flex items-center justify-center shadow-2xl">
+              <svg className="w-16 h-16 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+           </div>
         </div>
-        <h2 className="text-4xl font-black mb-2 gold-gradient">AGENDADO COM SUCESSO!</h2>
-        <p className="text-white/60 font-medium">Te esperamos no dia {selectedDate.split('-').reverse().join('/')} às {selectedTime}.</p>
+        <h2 className="text-5xl font-black mb-4 gold-gradient italic tracking-tighter uppercase">Reserva Confirmada!</h2>
+        <p className="text-white/50 font-medium text-lg max-w-md mx-auto">
+          Tudo pronto! Você será recebido em nossa unidade em <span className="text-white">{selectedDate.split('-').reverse().join('/')}</span> às <span className="text-white">{selectedTime}</span>.
+        </p>
+        <div className="mt-12 text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Redirecionando para o início...</div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-16 px-6 animate-fade-in">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+    <div className="max-w-5xl mx-auto py-24 px-6 animate-slide-up">
+      <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
         <div>
-          <h2 className="text-4xl font-black gold-gradient tracking-tighter">AGENDAMENTO</h2>
-          <p className="text-white/30 text-xs font-bold uppercase tracking-widest mt-1">Reserve seu lugar na elite</p>
+          <h2 className="text-xs font-black text-[#d4af37] tracking-[0.5em] uppercase mb-4">Step 0{step}</h2>
+          <h3 className="text-6xl font-black tracking-tighter uppercase">Agendamento.</h3>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-3 pb-2">
           {[1, 2, 3].map(i => (
-            <div key={i} className={`h-1.5 transition-all duration-500 rounded-full ${step >= i ? 'w-12 gold-bg' : 'w-6 bg-white/5'}`} />
+            <div key={i} className={`h-1.5 rounded-full transition-all duration-700 ${step >= i ? 'w-16 gold-bg' : 'w-8 bg-white/5'}`} />
           ))}
         </div>
       </div>
 
-      <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+      <div className="glass-panel rounded-[3rem] p-8 md:p-16 shadow-3xl">
         {step === 1 && (
-          <div className="animate-fade-in">
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] mb-8 text-[#d4af37]">01. Escolha o Serviço</h3>
-            <div className="grid sm:grid-cols-2 gap-4">
+          <div className="animate-slide-up">
+            <p className="text-xs font-black uppercase tracking-[0.3em] mb-12 text-white/30">Selecione a experiência desejada</p>
+            <div className="grid sm:grid-cols-2 gap-6">
               {services.map(s => (
                 <button
                   key={s.id}
                   onClick={() => { setSelectedService(s); setStep(2); }}
-                  className={`flex flex-col text-left p-8 rounded-3xl border transition-all duration-300 group ${selectedService?.id === s.id ? 'border-[#d4af37] bg-[#d4af37]/5' : 'border-white/5 bg-black/40 hover:border-white/20'}`}
+                  className={`group relative flex flex-col text-left p-10 rounded-3xl border transition-all duration-500 overflow-hidden ${selectedService?.id === s.id ? 'border-[#d4af37] bg-[#d4af37]/5' : 'border-white/5 bg-black/40 hover:border-white/20'}`}
                 >
-                  <span className="font-black text-xl mb-1 group-hover:text-[#d4af37] transition-colors">{s.name}</span>
-                  <span className="text-white/30 text-xs font-bold uppercase tracking-widest mb-6">{s.duration_min} minutos</span>
-                  <div className="mt-auto flex justify-between items-center w-full">
-                    <span className="text-2xl font-black gold-gradient">R$ {(s.price_cents / 100).toFixed(2)}</span>
-                    <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#d4af37] group-hover:border-[#d4af37] transition-all">
-                      <svg className="w-4 h-4 text-white group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
+                  <div className="relative z-10">
+                    <h4 className="font-black text-2xl mb-1 group-hover:text-[#d4af37] transition-colors">{s.name}</h4>
+                    <p className="text-white/30 text-[10px] font-black uppercase tracking-widest mb-8">{s.duration_min} min de procedimento</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-3xl font-black gold-gradient">R$ {(s.price_cents / 100).toFixed(2)}</span>
+                      <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#d4af37] group-hover:border-[#d4af37] transition-all transform group-hover:translate-x-1">
+                        <svg className="w-5 h-5 text-white group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
+                      </div>
                     </div>
                   </div>
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37] opacity-0 group-hover:opacity-5 blur-3xl transition-opacity -mr-16 -mt-16" />
                 </button>
               ))}
             </div>
@@ -85,69 +93,84 @@ const Booking: React.FC<{ user: User | null }> = ({ user }) => {
         )}
 
         {step === 2 && (
-          <div className="animate-fade-in">
-            <div className="flex items-center justify-between mb-8">
-              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#d4af37]">02. Selecione Data e Hora</h3>
-              <button onClick={() => setStep(1)} className="text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors underline decoration-[#d4af37]">Voltar</button>
+          <div className="animate-slide-up">
+            <div className="flex items-center justify-between mb-12">
+              <p className="text-xs font-black uppercase tracking-[0.3em] text-white/30">Escolha o seu momento</p>
+              <button onClick={() => setStep(1)} className="text-[10px] font-black uppercase tracking-widest text-[#d4af37] hover:underline">Alterar serviço</button>
             </div>
             
-            <div className="mb-10">
-              <label className="block text-[10px] font-black uppercase tracking-widest text-white/20 mb-3">Data da Experiência</label>
-              <input 
-                type="date" 
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-full bg-black border border-white/5 rounded-2xl p-5 text-white outline-none focus:border-[#d4af37] transition-all font-bold text-lg"
-              />
-            </div>
+            <div className="grid md:grid-cols-2 gap-12">
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-white/20 mb-4">Selecione o Dia</label>
+                <input 
+                  type="date" 
+                  value={selectedDate}
+                  min={new Date().toISOString().split('T')[0]}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="w-full bg-black/60 border border-white/10 rounded-2xl p-6 text-white outline-none focus:border-[#d4af37] transition-all font-black text-xl"
+                />
+                <p className="mt-4 text-[10px] text-white/20 font-medium">Atendemos de terça a sábado, das 09h às 19h.</p>
+              </div>
 
-            <label className="block text-[10px] font-black uppercase tracking-widest text-white/20 mb-3">Horários Disponíveis</label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3">
-              {slots.map(t => (
-                <button
-                  key={t}
-                  onClick={() => { setSelectedTime(t); setStep(3); }}
-                  className={`py-4 rounded-2xl font-black text-sm border transition-all duration-300 ${selectedTime === t ? 'border-[#d4af37] gold-bg text-black' : 'border-white/5 bg-black/40 hover:border-white/20 text-white/40 hover:text-white'}`}
-                >
-                  {t}
-                </button>
-              ))}
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-white/20 mb-4">Selecione o Horário</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'].map(t => (
+                    <button
+                      key={t}
+                      onClick={() => { setSelectedTime(t); setStep(3); }}
+                      className={`py-5 rounded-2xl font-black text-sm border transition-all duration-300 ${selectedTime === t ? 'border-[#d4af37] gold-bg text-black' : 'border-white/5 bg-black/20 hover:border-white/20 text-white/30 hover:text-white'}`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}
 
         {step === 3 && selectedService && (
-          <div className="animate-fade-in">
-            <div className="flex items-center justify-between mb-8">
-              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#d4af37]">03. Revisão Final</h3>
-              <button onClick={() => setStep(2)} className="text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors underline decoration-[#d4af37]">Voltar</button>
-            </div>
+          <div className="animate-slide-up max-w-2xl mx-auto">
+            <p className="text-xs font-black uppercase tracking-[0.3em] text-center mb-12 text-white/30">Confirmação de Reserva</p>
 
-            <div className="bg-black/60 border border-white/5 p-10 rounded-[2rem] mb-10 space-y-6">
-              <div className="flex justify-between items-center">
-                <span className="text-white/20 text-xs font-black uppercase tracking-widest">Serviço</span>
-                <span className="font-black text-xl text-white/90">{selectedService.name}</span>
+            <div className="bg-black/60 border border-white/5 p-12 rounded-[2.5rem] mb-12 space-y-8 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-8 opacity-5">
+                <svg className="w-24 h-24 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-white/20 text-xs font-black uppercase tracking-widest">Data & Hora</span>
-                <span className="font-black text-xl text-white/90">{selectedDate.split('-').reverse().join('/')} às {selectedTime}</span>
+
+              <div className="flex justify-between items-end border-b border-white/5 pb-6">
+                <div className="space-y-1">
+                  <span className="text-white/20 text-[10px] font-black uppercase tracking-widest block">Serviço Premium</span>
+                  <span className="font-black text-2xl uppercase italic gold-gradient">{selectedService.name}</span>
+                </div>
+                <button onClick={() => setStep(1)} className="text-[10px] font-black text-white/20 hover:text-[#d4af37] uppercase underline">Editar</button>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-white/20 text-xs font-black uppercase tracking-widest">Duração</span>
-                <span className="font-black text-xl text-white/90">{selectedService.duration_min} min</span>
+
+              <div className="grid grid-cols-2 gap-8">
+                <div className="space-y-1">
+                  <span className="text-white/20 text-[10px] font-black uppercase tracking-widest block">Data</span>
+                  <span className="font-black text-xl text-white/80">{selectedDate.split('-').reverse().join('/')}</span>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-white/20 text-[10px] font-black uppercase tracking-widest block">Horário</span>
+                  <span className="font-black text-xl text-white/80">{selectedTime}</span>
+                </div>
               </div>
-              <div className="pt-6 border-t border-white/5 flex justify-between items-center">
-                <span className="text-white/20 text-xs font-black uppercase tracking-widest">Total a Pagar</span>
+
+              <div className="pt-8 border-t border-white/5 flex justify-between items-center">
+                <span className="text-white/20 text-[10px] font-black uppercase tracking-widest">Total do Investimento</span>
                 <span className="text-4xl font-black gold-gradient">R$ {(selectedService.price_cents / 100).toFixed(2)}</span>
               </div>
             </div>
 
             <button 
               onClick={handleBook}
-              className="w-full gold-bg text-black py-6 rounded-[1.5rem] font-black text-xl shadow-2xl shadow-gold-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-tighter"
+              className="w-full gold-bg text-black py-7 rounded-3xl font-black text-xl shadow-2xl shadow-gold-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-tighter"
             >
-              Confirmar Reserva
+              FINALIZAR AGENDAMENTO
             </button>
+            <p className="mt-6 text-center text-white/20 text-[10px] font-black uppercase tracking-widest">Pague diretamente na barbearia (Cartão ou Dinheiro)</p>
           </div>
         )}
       </div>
