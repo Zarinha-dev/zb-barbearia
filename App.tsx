@@ -36,7 +36,7 @@ const App: React.FC = () => {
   if (isLoading) return <div className="h-screen flex items-center justify-center bg-black text-[#d4af37] font-black">ZB BARBEARIA...</div>;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#0a0a0a]">
       <Navbar 
         user={user} 
         onNavigate={setView} 
@@ -52,15 +52,15 @@ const App: React.FC = () => {
         {view === 'register' && <Register onGoLogin={() => setView('login')} />}
       </main>
 
-      <footer className="bg-[#050505] border-t border-white/5 py-12 px-6">
+      <footer className="bg-[#050505] border-t border-white/5 py-12 px-6 mt-20">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="text-center md:text-left">
             <h2 className="text-2xl font-black gold-gradient tracking-tighter">ZB BARBEARIA</h2>
             <p className="text-white/40 mt-2">© {new Date().getFullYear()} - Nine, Portugal.</p>
           </div>
           <div className="flex gap-6">
-            <a href="#" className="text-white/60 hover:text-[#d4af37] transition-colors">Instagram</a>
-            <a href="#" className="text-white/60 hover:text-[#d4af37] transition-colors">WhatsApp</a>
+            <a href="#" className="text-white/60 hover:text-[#d4af37] transition-colors font-bold text-sm">Instagram</a>
+            <a href="#" className="text-white/60 hover:text-[#d4af37] transition-colors font-bold text-sm">WhatsApp</a>
           </div>
         </div>
       </footer>

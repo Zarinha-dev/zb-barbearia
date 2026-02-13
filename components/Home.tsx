@@ -62,7 +62,6 @@ const Home: React.FC<HomeProps> = ({ user, onBook, onAdmin }) => {
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-3 gap-8">
               
-              {/* Cartão Fidelidade */}
               <div className="bg-[#111] border border-[#d4af37]/20 rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37] opacity-5 blur-3xl -mr-16 -mt-16 group-hover:opacity-10 transition-opacity" />
                 <h3 className="text-xs font-black text-[#d4af37] tracking-widest mb-6 uppercase">Cartão Fidelidade</h3>
@@ -80,36 +79,23 @@ const Home: React.FC<HomeProps> = ({ user, onBook, onAdmin }) => {
                     </div>
                   ))}
                 </div>
-                <p className="text-white/40 text-xs">Faltam apenas <span className="text-white font-bold">4 cortes</span> para você ganhar um serviço grátis!</p>
+                <p className="text-white/40 text-xs">Faltam <span className="text-white font-bold">4 cortes</span> para sua recompensa!</p>
               </div>
 
-              {/* Horários Rápidos */}
               <div className="lg:col-span-2 bg-[#111] border border-white/10 rounded-3xl p-8 shadow-2xl">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 h-full">
                   <div className="flex-1">
-                    <h2 className="text-xs font-black text-white/40 tracking-[0.2em] mb-4 uppercase">Horários de Hoje</h2>
+                    <h2 className="text-xs font-black text-white/40 tracking-[0.2em] mb-4 uppercase">Agenda de Hoje</h2>
                     <div className="flex flex-wrap gap-2 mb-6">
                       {availableSlots.map(slot => (
-                        <button 
-                          key={slot}
-                          onClick={onBook}
-                          className="bg-black/50 border border-white/5 hover:border-[#d4af37] px-5 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-105 active:scale-95 group"
-                        >
-                          <span className="group-hover:text-[#d4af37]">{slot}</span>
-                        </button>
+                        <button key={slot} onClick={onBook} className="bg-black/50 border border-white/5 hover:border-[#d4af37] px-5 py-2.5 rounded-xl font-bold text-sm transition-all">{slot}</button>
                       ))}
                     </div>
                   </div>
-
                   <div className="flex flex-col gap-3 min-w-[220px] w-full md:w-auto">
-                    <button 
-                      onClick={onBook}
-                      className="w-full gold-bg text-black py-4 rounded-xl font-black text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
-                    >
-                      NOVO AGENDAMENTO
-                    </button>
+                    <button onClick={onBook} className="w-full gold-bg text-black py-4 rounded-xl font-black text-sm">NOVO AGENDAMENTO</button>
                     {user.role === 'admin' && (
-                      <button onClick={onAdmin} className="w-full bg-white/5 border border-white/10 text-white py-4 rounded-xl font-bold text-sm hover:bg-white/10 transition-all">PAINEL ADMIN</button>
+                      <button onClick={onAdmin} className="w-full bg-white/5 border border-white/10 text-white py-4 rounded-xl font-bold text-sm">PAINEL ADMIN</button>
                     )}
                   </div>
                 </div>
@@ -120,44 +106,11 @@ const Home: React.FC<HomeProps> = ({ user, onBook, onAdmin }) => {
         </section>
       )}
 
-      {/* Serviços */}
-      <section className="py-24 px-6 bg-[#050505]">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-16">
-            <div>
-              <h2 className="text-4xl font-black gold-gradient uppercase tracking-tighter">Nossos Serviços</h2>
-              <p className="text-white/40 mt-2">Artesania e cuidado em cada detalhe.</p>
-            </div>
-            <div className="h-px flex-1 bg-white/5 hidden md:block mx-8 mb-4"></div>
-            <button onClick={onBook} className="text-white/60 hover:text-[#d4af37] text-sm font-bold border-b border-white/10 pb-1 uppercase tracking-widest">Ver Preços</button>
-          </div>
-          
-          <div className="grid md:grid-cols-4 gap-4">
-            {[
-              { name: 'Corte Tesoura', desc: 'Clássico e atemporal' },
-              { name: 'Fade/Degradê', desc: 'Modernidade e precisão' },
-              { name: 'Barba Terapia', desc: 'Relaxamento com toalha quente' },
-              { name: 'Platinado', desc: 'Estilo audacioso' }
-            ].map((s, i) => (
-              <div key={i} className="p-8 rounded-3xl bg-black border border-white/5 hover:border-[#d4af37]/30 transition-all group">
-                <span className="text-[#d4af37] font-black text-3xl mb-4 block group-hover:scale-110 transition-transform">0{i+1}</span>
-                <h3 className="text-xl font-black mb-2 text-white/90">{s.name}</h3>
-                <p className="text-white/40 text-sm">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery Section */}
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4">
           {images.map((src, i) => (
-            <div key={i} className="group relative overflow-hidden rounded-[2rem] border border-white/10 aspect-[4/5] bg-[#111]">
+            <div key={i} className="group relative overflow-hidden rounded-[2rem] border border-white/10 aspect-[4/5]">
               <img src={src} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={`Estilo ${i}`} />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
-                <p className="text-white font-black text-lg tracking-tight">ZB LOOK 0{i+1}</p>
-              </div>
             </div>
           ))}
         </div>
