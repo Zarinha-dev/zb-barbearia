@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { User } from './types.ts';
-import Navbar from './components/Navbar.tsx';
-import Home from './components/Home.tsx';
-import Booking from './components/Booking.tsx';
-import AdminDashboard from './components/AdminDashboard.tsx';
-import Login from './components/Login.tsx';
-import Register from './components/Register.tsx';
+import { User } from './types';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import Booking from './components/Booking';
+import AdminDashboard from './components/AdminDashboard';
+import Login from './components/Login';
+import Register from './components/Register';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);

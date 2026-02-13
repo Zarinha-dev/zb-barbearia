@@ -13,7 +13,7 @@
       background-color: #0a0a0a;
       color: #ffffff;
       margin: 0;
-      overflow: hidden;
+      overflow-x: hidden;
     }
     .gold-gradient {
       background: linear-gradient(135deg, #d4af37 0%, #f1d592 50%, #d4af37 100%);
@@ -23,9 +23,13 @@
     .gold-bg {
       background: linear-gradient(135deg, #d4af37 0%, #f1d592 50%, #d4af37 100%);
     }
-    #root { height: 100vh; overflow-y: auto; }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    #root { min-height: 100vh; }
     
-    /* Animação de entrada suave */
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -53,7 +57,7 @@
   <div id="root">
     <div class="h-screen flex items-center justify-center bg-black">
       <div class="text-center">
-        <h1 class="text-2xl font-black gold-gradient tracking-[0.3em] animate-pulse uppercase">Carregando Experiência ZB...</h1>
+        <h1 class="text-2xl font-black gold-gradient tracking-[0.3em] animate-pulse uppercase">Iniciando ZB Premium...</h1>
       </div>
     </div>
   </div>
